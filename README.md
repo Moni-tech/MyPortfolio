@@ -1,6 +1,6 @@
 # My Profile Card 🌸
 
-This is an elegant and dynamic profile card built with vanilla HTML, CSS, and JavaScript. It's a personal portfolio project designed to showcase my skills in frontend development and my attention to detail.
+This is an elegant and dynamic profile card built with HTML, CSS, and JavaScript. It's a personal portfolio project designed to showcase my skills in frontend development and my attention to detail.
 
 ---
 
