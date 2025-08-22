@@ -8,7 +8,7 @@ A personal portfolio piece designed to be a digital business card, this elegant 
 
 ## 🚀 Live Demo
 
-Experience the live project here: [https://moni-tech.github.io/My-Profile-Card/](https://moni-tech.github.io/My-Profile-Card/)
+Experience the live project here: [https://moni-tech.github.io/MyPortfolio/](https://moni-tech.github.io/MyPortfolio/)
 
 ---
 
