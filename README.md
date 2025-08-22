@@ -28,11 +28,6 @@ This is a simple yet elegant profile card showcasing who I am, my skills, and ho
 
 ---
 
-## 📸 Preview
-![Portfolio Screenshot](images/preview.png)  
-*(You can add a screenshot of your card here — just take one and save it in your `images/` folder as `preview.png`.)*
-
----
 
 ## 🔗 Connect With Me
 - [LinkedIn](https://www.linkedin.com/in/monisha-aradhya-cm-7069b8259)  
