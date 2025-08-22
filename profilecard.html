@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile Card</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      transition: background 0.5s ease;
+      position: relative;
+      padding-bottom: 80px;
+    }
+
+    /* --- Date & Time Display --- */
+    .datetime {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #333;
+      background: rgba(255,255,255,0.6);
+      padding: 6px 14px;
+      border-radius: 20px;
+      backdrop-filter: blur(5px);
+    }
+
+    body.dark .datetime {
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+    }
+
+    /* --- Background Animations --- */
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    /* Light Mode Clouds */
+    .cloud {
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0.8;
+        filter: blur(2px);
+    }
+
+    @keyframes floatCloud {
+        from { transform: translateX(0); }
+        to { transform: translateX(50px); }
+    }
+
+    .cloud {
+        animation: floatCloud 20s linear infinite alternate;
+    }
+
+
+    .cloud::before,
+    .cloud::after {
+        content: '';
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+    }
+
+    /* Cloud size variations */
+    .cloud.small { width: 60px; height: 30px; }
+    .cloud.small::before { width: 30px; height: 30px; top: -10px; left: -15px; }
+    .cloud.small::after  { width: 30px; height: 30px; top: -8px; left: 35px; }
+
+    .cloud.medium { width: 100px; height: 50px; }
+    .cloud.medium::before { width: 50px; height: 50px; top: -20px; left: -25px; }
+    .cloud.medium::after  { width: 50px; height: 50px; top: -15px; left: 60px; }
+
+    .cloud.large { width: 140px; height: 70px; }
+    .cloud.large::before { width: 70px; height: 70px; top: -25px; left: -35px; }
+    .cloud.large::after  { width: 70px; height: 70px; top: -20px; left: 80px; }
+
+
+    /* Dark Mode Stars */
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: twinkle infinite alternate;
+    }
+
+    @keyframes twinkle {
+        from { opacity: 0.2; }
+        to { opacity: 1; }
+    }
+
+
+    /* --- Card --- */
+    .card {
+      width: 350px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, background 0.4s ease, color 0.4s ease;
+    }
+    .card:hover { transform: translateY(-5px); }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .card:hover .card-image img { transform: scale(1.1); }
+
+    .card-content {
+      padding: 25px;
+      text-align: center;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      margin-top: -60px;
+      object-fit: cover;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover .profile-img {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 { margin: 10px 0 5px; color: #333; font-size: 1.4rem; }
+    p { color: #666; font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px; }
+
+    .skills {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .skill-tag {
+      padding: 6px 12px;
+      background: #f0f2f5;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f0f2f5;
+      color: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .social-icon:hover {
+      background: #4299e1;
+      color: #fff;
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    /* Contact Button */
+    .contact-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+        padding: 12px;
+        background: #0077ff;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .contact-btn:hover {
+        background: #005fcc;
+        transform: translateY(-2px);
+    }
+
+
+
+    /* Dark Mode */
+    body.dark {
+      background: linear-gradient(135deg, #0d0d1a, #1c1c2b);
+    }
+    body.dark .card { background: #2b2b2b; color: #f5f5f5; }
+    body.dark h2 { color: #fff; }
+    body.dark p { color: #bbb; }
+    body.dark .skill-tag { background: #3a3a3a; color: #eee; }
+    body.dark .social-icon { background: #3a3a3a; color: #eee; }
+    body.dark .social-icon:hover { background: #4299e1; color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Date & Time -->
+  <div class="datetime" id="datetime"></div>
+
+  <!-- Background -->
+  <div class="background" id="background"></div>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Dark</button>
+
+  <!-- Profile Card -->
+  <div class="card">
+    <div class="card-image">
+        <img src="images/bg-light.jpeg" alt="Tech background" class="card-banner" />
+    </div>
+
+
+    <div class="card-content">
+      <img src="images/profile.jpg" alt="Profile photo" class="profile-img" />
+
+      <h2>Monisha Aradhya CM</h2>
+      <p>Aspiring Frontend Developer ✨  
+         Passionate about crafting beautiful web experiences, learning each day, and growing through creativity & code.</p>
+
+      <div class="skills">
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Figma</span>
+      </div>
+
+      <a href="mailto:monitech.projects@gmail.com" class="contact-btn">
+        <i class="fa fa-envelope"></i> Contact Me
+      </a>
+
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/monisha-aradhya-cm-7069b8259" class="social-icon">
+            <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="#" class="social-icon">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://github.com/Moni-tech" class="social-icon">
+            <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </div>
+
+  <script>
+    // --- Date & Time ---
+    function updateDateTime() {
+      const now = new Date();
+      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+      const date = now.toLocaleDateString(undefined, options);
+      const time = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById("datetime").textContent = date + " | " + time;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    const cardBanner = document.querySelector(".card-banner");
+
+    // ---Dynamic profile card background---
+    function updateTheme() {
+        if (document.body.classList.contains("dark")) {
+            cardBanner.src = "images/bg-dark.jpeg";
+        } else {
+            cardBanner.src = "images/bg-light.jpeg";
+        }
+    }
+
+
+    // --- Background Elements ---
+    function generateBackground() {
+        const bg = document.getElementById("background");
+        bg.innerHTML = ""; // clear old elements
+
+        if (document.body.classList.contains("dark")) {
+            // Stars
+            for (let i = 0; i < 100; i++) {
+                let star = document.createElement("div");
+                star.classList.add("star");
+
+                // random size (tiny to bright stars)
+                let size = Math.random() * 3 + 1; // 1px - 4px
+                star.style.width = size + "px";
+                star.style.height = size + "px";
+
+                // random position
+                star.style.top = Math.random() * 100 + "vh";
+                star.style.left = Math.random() * 100 + "vw";
+
+                // random twinkle speed
+                star.style.animationDuration = (1 + Math.random() * 3) + "s";
+
+                bg.appendChild(star);
+            }
+
+        } else {
+            // Clouds scattered 
+            const cloudSizes = ["small", "medium", "large"];
+            for (let i = 0; i < 15; i++) {
+                const size = cloudSizes[Math.floor(Math.random() * cloudSizes.length)];
+                const cloud = document.createElement("div");
+                cloud.classList.add("cloud", size);
+                cloud.style.top = Math.random() * 40 + "%"; // restrict to top 40%
+                cloud.style.left = Math.random() * 100 + "%";
+                bg.appendChild(cloud);
+            }
+
+        }
+    }
+
+
+    // --- Toggle Dark Mode ---
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".toggle-btn");
+      btn.textContent = document.body.classList.contains("dark") ? "☀ Light" : "🌙 Dark";
+      updateTheme(); // Update the theme when toggling
+      generateBackground();
+    }
+
+    // Initial background
+    generateBackground();
+  </script>
+</body>
+</html>
